@@ -12,6 +12,7 @@ class Step5Screen extends StatefulWidget {
 
 class _Step5ScreenState extends State<Step5Screen> {
   bool isCompleted = false;
+  final TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,19 @@ class _Step5ScreenState extends State<Step5Screen> {
           },
           onFinish: () {
             // Ensure that the navigation happens only after the state change
+            if (nameController.text.isEmpty) {
+              setState(() {
+                isCompleted = false;
+              });
+              // Show error message
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Name is required!"),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              return;
+            }
             if (isCompleted) {
               Navigator.push(
                 context,
@@ -96,7 +110,8 @@ class _Step5ScreenState extends State<Step5Screen> {
               SizedBox(
                 height: screenHeight * 0.07,
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: nameController,
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                 ),
