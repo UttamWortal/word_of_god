@@ -1,0 +1,6 @@
+class AssetsImages {
+  static const imagesPath = "assets/images";
+
+  static const welecome = "$imagesPath/welecome.png";
+  static const voice = "$imagesPath/voice.png";
+}
