@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:god/config/color.dart';
+import 'package:god/config/images.dart';
 import 'package:god/pages/select_screen.dart';
 import 'package:god/pages/widget/commonText.dart';
+import 'package:god/pages/widget/commonTextfield.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
 class Step5Screen extends StatefulWidget {
@@ -16,7 +19,7 @@ class _Step5ScreenState extends State<Step5Screen> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
+    final double size = MediaQuery.of(context).size.height;
     return Scaffold(
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(
@@ -26,9 +29,10 @@ class _Step5ScreenState extends State<Step5Screen> {
         ),
         child: SwipeableButtonView(
           buttonText: "Request Callback",
-          buttonWidget: const Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.black,
+          buttonWidget: Image.asset(
+            AssetsImages.arrow,
+            height: 15,
+            color: black,
           ),
           activeColor: Colors.black,
           isFinished: isCompleted,
@@ -86,30 +90,34 @@ class _Step5ScreenState extends State<Step5Screen> {
                       ),
                     ),
                     TextSpan(
-                      text: " Callback",
+                      text: " Callback ",
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w600,
                         color: Colors.blue,
                       ),
                     ),
+                    TextSpan(
+                      text: "(Optional)",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              commonText(
-                  text:
-                      "If users feel they need further guidance, they can request a callback."),
-              SizedBox(height: screenHeight * 0.05),
-              const Text(
-                "Name (required):",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0XFF7C7C7C),
-                  fontWeight: FontWeight.w500,
-                ),
+              CommonText(
+                text:
+                    "If users feel they need further guidance, they can request a callback.",
+              ),
+              SizedBox(height: size * 0.05),
+              CommonTextfieldName(
+                text: "Name (required):",
               ),
               SizedBox(
-                height: screenHeight * 0.07,
+                height: size * 0.06,
                 child: TextField(
                   controller: nameController,
                   decoration: const InputDecoration(
@@ -117,68 +125,40 @@ class _Step5ScreenState extends State<Step5Screen> {
                   ),
                 ),
               ),
-              SizedBox(height: screenHeight * 0.01),
-              const Text(
-                "Address:",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0XFF7C7C7C),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              SizedBox(height: size * 0.01),
+              const CommonTextfieldName(text: "Address:"),
               SizedBox(
-                height: screenHeight * 0.07,
+                height: size * 0.06,
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-              SizedBox(height: screenHeight * 0.01),
-              Text(
-                "Country:",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0XFF7C7C7C),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              SizedBox(height: size * 0.01),
+              CommonTextfieldName(text: "Country:"),
               SizedBox(
-                height: screenHeight * 0.07,
+                height: size * 0.06,
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-              SizedBox(height: screenHeight * 0.01),
-              Text(
-                "State:",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0XFF7C7C7C),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              SizedBox(height: size * 0.01),
+              CommonTextfieldName(text: "State:"),
               SizedBox(
-                height: screenHeight * 0.07,
+                height: size * 0.06,
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-              SizedBox(height: screenHeight * 0.01),
-              Text(
-                "City:",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0XFF7C7C7C),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              SizedBox(height: size * 0.01),
+              CommonTextfieldName(text: "City:"),
               SizedBox(
-                height: screenHeight * 0.07,
+                height: size * 0.06,
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
