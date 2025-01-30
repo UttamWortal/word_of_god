@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "17980196565",
+    "project_id": "wordofgod-deeed",
+    "storage_bucket": "wordofgod-deeed.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17980196565:android:80049bd768766cdd21045c",
+        "android_client_info": {
+          "package_name": "com.example.god"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJc27HsfMyxXZAF9hDtjUzLvR8U4_4_KM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

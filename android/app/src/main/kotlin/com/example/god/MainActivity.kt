@@ -1,4 +1,4 @@
-package com.example.word_of_god
+package com.example.god
 
 import io.flutter.embedding.android.FlutterActivity
 

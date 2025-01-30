@@ -1,4 +1,4 @@
-# word_of_god
+# god
 
 A new Flutter project.
 

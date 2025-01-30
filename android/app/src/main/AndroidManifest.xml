@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="word_of_god"
+        android:label="god"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:god/config/color.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class CommonText extends StatelessWidget {
+class CommonTextfieldName extends StatelessWidget {
   final String text;
-  const CommonText({
+  const CommonTextfieldName({
     super.key,
     required this.text,
   });
@@ -13,10 +12,10 @@ class CommonText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: GoogleFonts.roboto(
-        color: lightGrey,
-        fontWeight: FontWeight.w400,
-        fontSize: 14,
+      style: TextStyle(
+        fontSize: 16,
+        color: textField,
+        fontWeight: FontWeight.w500,
       ),
     );
   }

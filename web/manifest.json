@@ -1,6 +1,6 @@
 {
-    "name": "word_of_god",
-    "short_name": "word_of_god",
+    "name": "god",
+    "short_name": "god",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
