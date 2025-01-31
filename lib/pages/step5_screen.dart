@@ -17,6 +17,37 @@ class _Step5ScreenState extends State<Step5Screen> {
   bool isCompleted = false;
   final TextEditingController nameController = TextEditingController();
 
+  void showTopError(String message) {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 50,
+        left: MediaQuery.of(context).size.width * 0.1,
+        width: MediaQuery.of(context).size.width * 0.8,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    overlay.insert(overlayEntry);
+    Future.delayed(const Duration(seconds: 2), () {
+      overlayEntry.remove();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final double size = MediaQuery.of(context).size.height;
@@ -50,12 +81,7 @@ class _Step5ScreenState extends State<Step5Screen> {
                 isCompleted = false;
               });
               // Show error message
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Name is required!"),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              showTopError("Name is required!");
               return;
             }
 

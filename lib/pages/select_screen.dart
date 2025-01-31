@@ -16,6 +16,7 @@ class SelectScreen extends StatefulWidget {
 
 class _SelectScreenState extends State<SelectScreen> {
   bool isCompleted = false;
+  String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +100,7 @@ class _SelectScreenState extends State<SelectScreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
+                    value: selectedValue,
                     hint: Text(
                       "Select One Type",
                       style: TextStyle(
@@ -154,7 +156,9 @@ class _SelectScreenState extends State<SelectScreen> {
                       ),
                     ],
                     onChanged: (value) {
-                      // Handle dropdown selection
+                      setState(() {
+                        selectedValue = value;
+                      });
                     },
                     icon: Image.asset(
                       AssetsImages.dropdown,

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import for clipboard functionality
+import 'package:flutter/services.dart';
 import 'package:god/config/color.dart';
 import 'package:god/config/images.dart';
 import 'package:god/pages/step4_screen.dart';
@@ -18,11 +18,10 @@ class Step3Screen extends StatefulWidget {
 
 class _Step3ScreenState extends State<Step3Screen> {
   bool isCompleted = false;
-  late AudioPlayer _audioPlayer;
+  final AudioPlayer _audioPlayer = AudioPlayer();
   bool isPlaying = false;
   double _currentPosition = 0.0;
   double _duration = 1.0;
-  bool _isBuffering = false;
 
   final String audioUrl =
       "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
@@ -36,60 +35,45 @@ Thank You for being my refuge.
   @override
   void initState() {
     super.initState();
-    _audioPlayer = AudioPlayer();
-
-    // Listen for position updates
-    _audioPlayer.positionStream.listen((position) {
-      if (mounted) {
-        setState(() {
-          _currentPosition = position.inMilliseconds.toDouble();
-        });
-      }
-    });
-
-    // Listen for duration updates
-    _audioPlayer.durationStream.listen((duration) {
-      if (mounted) {
-        setState(() {
-          _duration = duration?.inMilliseconds.toDouble() ?? 1.0;
-        });
-      }
-    });
-
-    // Listen for playback events (including buffering)
-    _audioPlayer.playbackEventStream.listen((event) {
-      setState(() {
-        _isBuffering = event.processingState == ProcessingState.buffering;
-      });
-    });
+    _setupAudio();
   }
 
-  @override
-  void dispose() {
-    _audioPlayer.dispose();
-    super.dispose();
+  void _setupAudio() async {
+    try {
+      await _audioPlayer.setUrl(audioUrl);
+
+      _audioPlayer.durationStream.listen((duration) {
+        if (duration != null && mounted) {
+          setState(() {
+            _duration = duration.inMilliseconds.toDouble();
+          });
+        }
+      });
+
+      _audioPlayer.positionStream.listen((position) {
+        if (mounted) {
+          setState(() {
+            _currentPosition =
+                position.inMilliseconds.toDouble().clamp(0, _duration);
+          });
+        }
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error loading audio: $e");
+      }
+    }
   }
 
   void togglePlayPause() async {
+    if (isPlaying) {
+      await _audioPlayer.pause();
+    } else {
+      await _audioPlayer.play();
+    }
     setState(() {
       isPlaying = !isPlaying;
     });
-
-    if (isPlaying) {
-      try {
-        await _audioPlayer.setUrl(audioUrl); // Load the audio
-        await _audioPlayer.play(); // Then play the audio
-      } catch (e) {
-        if (kDebugMode) {
-          print('Error playing audio: $e');
-        }
-        setState(() {
-          isPlaying = false; // Revert to paused state on error
-        });
-      }
-    } else {
-      await _audioPlayer.pause();
-    }
   }
 
   void copyToClipboard() {
@@ -103,18 +87,23 @@ Thank You for being my refuge.
   }
 
   void _onSliderChanged(double value) {
-    final position = Duration(milliseconds: value.toInt());
-    _audioPlayer.seek(position);
+    _audioPlayer.seek(Duration(milliseconds: value.toInt()));
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final double size = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
+      backgroundColor: Colors.white,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(15.0),
         child: SwipeableButtonView(
           buttonText: "Next",
           buttonWidget: Image.asset(
@@ -141,13 +130,8 @@ Thank You for being my refuge.
           },
         ),
       ),
-      backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.only(
-          left: 20,
-          right: 15,
-          top: size * 0.05, // Adjust padding based on screen size
-        ),
+        padding: EdgeInsets.only(left: 20, right: 15, top: size * 0.05),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -204,7 +188,8 @@ Thank You for being my refuge.
               ),
             ),
             SizedBox(height: size * 0.05),
-            // Audio Player Section
+
+            // Optimized Audio Player
             Center(
               child: Column(
                 children: [
@@ -216,14 +201,14 @@ Thank You for being my refuge.
                     ),
                     onPressed: togglePlayPause,
                   ),
-                  _isBuffering
-                      ? CircularProgressIndicator()
-                      : Slider(
-                          min: 0.0,
-                          max: _duration,
-                          value: _currentPosition,
-                          onChanged: _onSliderChanged,
-                        ),
+                  Slider(
+                    min: 0.0,
+                    max:
+                        _duration > 1.0 ? _duration : 1.0, // Ensuring valid max
+                    value: _currentPosition.clamp(
+                        0.0, _duration), // Preventing out-of-range error
+                    onChanged: _onSliderChanged,
+                  ),
                   GestureDetector(
                     onTap: () {
                       // Add save voice functionality
